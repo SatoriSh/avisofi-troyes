@@ -1,0 +1,323 @@
+/* ===== Couleurs ===== */
+:root {
+    --primary: #001f3b;
+    --accent: #346b00;
+    --bg: #f7f9ff;
+    --bg-card: #ffffff;
+    --bg-soft: #ecf4ff;
+    --text: #0b1d2b;
+    --text-soft: #43474e;
+    --border: #c3c6cf;
+    --gold: #f4b61a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ===== En-tête ===== */
+header {
+    position: sticky;
+    top: 0;
+    background: rgba(247, 249, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 50;
+}
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4.5rem;
+}
+.brand { display: flex; align-items: baseline; gap: 0.4rem; }
+.brand-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--primary);
+}
+.brand-city {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 1.4rem;
+    color: var(--text-soft);
+}
+.header-phone {
+    background: var(--bg-soft);
+    color: var(--primary);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* ===== Sections ===== */
+section { padding: 4rem 0; }
+.section-head { margin-bottom: 2rem; }
+.section-tag {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+.section-head p { color: var(--text-soft); }
+
+/* ===== Hero ===== */
+.hero {
+    background: linear-gradient(to bottom, var(--bg-soft) 0%, var(--bg) 100%);
+}
+.hero-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+.badge {
+    display: inline-block;
+    background: var(--bg-card);
+    color: var(--text-soft);
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+.hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    color: var(--primary);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+}
+.hero p {
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+}
+.check-list li {
+    position: relative;
+    padding-left: 1.4rem;
+    margin-bottom: 0.4rem;
+    color: var(--text-soft);
+}
+.check-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* ===== Cartes ===== */
+.card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0, 31, 59, 0.05);
+}
+.hero-card h2 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+.hero-card p { font-size: 0.95rem; margin-bottom: 1rem; }
+
+/* ===== Grilles ===== */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+/* ===== Services ===== */
+.service-icon {
+    width: 3rem;
+    height: 3rem;
+    background: var(--bg-soft);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+.service-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+    margin-bottom: 0.4rem;
+}
+.service-card p { color: var(--text-soft); font-size: 0.95rem; }
+.service-tag {
+    display: inline-block;
+    background: var(--bg-soft);
+    color: var(--primary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 0.75rem;
+}
+
+/* ===== Équipe ===== */
+.team { background: var(--bg-soft); }
+.team-card { text-align: center; }
+
+/* Avatar : photo si présente, initiales sinon */
+.avatar {
+    position: relative;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 2.2rem;
+    margin: 0 auto 1.25rem;
+}
+.avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+}
+.team-card .role {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.team-card .bio { color: var(--text-soft); font-size: 0.9rem; }
+
+/* ===== Avis ===== */
+.rating-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.rating-stars { color: var(--gold); font-size: 1.5rem; }
+.rating-banner strong {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+    font-size: 1.3rem;
+}
+.rating-detail { color: var(--text-soft); font-size: 0.9rem; }
+.review-text { font-style: italic; margin-bottom: 1rem; }
+.review-author {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+.review-author strong { color: var(--primary); display: block; }
+.review-author span { color: var(--text-soft); font-size: 0.9rem; }
+
+/* ===== Contact ===== */
+.contact { background: var(--bg-soft); }
+.contact-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+.info-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+.info-list li {
+    display: flex;
+    gap: 1rem;
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 4px rgba(0, 31, 59, 0.04);
+}
+.info-icon { font-size: 1.5rem; }
+.info-list strong {
+    display: block;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+}
+.info-list a { color: var(--primary); text-decoration: underline; }
+.contact-note {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 1px 4px rgba(0, 31, 59, 0.05);
+}
+.contact-note h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+.contact-note p { color: var(--text-soft); font-size: 0.9rem; }
+
+/* ===== Pied de page ===== */
+footer {
+    background: var(--primary);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 3rem 0 2rem;
+}
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+footer .brand-name, footer .brand-city { color: white; }
+.footer-desc { margin-top: 0.5rem; font-size: 0.9rem; max-width: 400px; }
+.footer-contact { text-align: right; }
+.footer-contact a { color: white; font-weight: 600; display: block; margin-top: 0.25rem; }
+.legal {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+    font-size: 0.85rem;
+}
+.legal strong { color: white; }
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .hero-inner, .contact-inner { grid-template-columns: 1fr; }
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.8rem; }
+    .footer-top { flex-direction: column; }
+    .footer-contact { text-align: left; }
+}
