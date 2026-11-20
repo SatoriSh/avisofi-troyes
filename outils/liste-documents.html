@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liste documents</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f5f7fa;
+        color: #0b1d2b;
+        padding: 2rem;
+        line-height: 1.5;
+    }
+    .wrap {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    h1 {
+        font-family: 'Montserrat', sans-serif;
+        color: #001f3b;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #ecf4ff;
+    }
+    .form-row {
+        margin-bottom: 1rem;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    .form-row label {
+        font-weight: 500;
+        color: #43474e;
+        font-size: 0.9rem;
+        width: 140px;
+    }
+    .form-row input, .form-row select {
+        flex: 1;
+        padding: 0.45rem 0.6rem;
+        border: 1px solid #c3c6cf;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 0.9rem;
+    }
+    .form-row input:focus, .form-row select:focus {
+        outline: none;
+        border-color: #001f3b;
+    }
+    .btn-print {
+        background: #001f3b;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+    .btn-print:hover {
+        background: #2a486b;
+    }
+    .list {
+        margin-top: 1.5rem;
+    }
+    .list-section {
+        margin-bottom: 1.25rem;
+    }
+    .list-section h3 {
+        font-family: 'Montserrat', sans-serif;
+        color: #001f3b;
+        font-size: 0.95rem;
+        margin-bottom: 0.4rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #ecf4ff;
+    }
+    .list-section ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .list-section li {
+        padding: 0.2rem 0 0.2rem 1.6rem;
+        position: relative;
+        font-size: 0.9rem;
+        color: #0b1d2b;
+    }
+    .list-section li::before {
+        content: "□";
+        position: absolute;
+        left: 0;
+        color: #43474e;
+    }
+    .agency-header {
+        display: none;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #001f3b;
+    }
+    .agency-name {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+        color: #001f3b;
+    }
+    .agency-city {
+        font-weight: 300;
+        color: #43474e;
+    }
+    .agency-coords {
+        font-size: 0.8rem;
+        color: #43474e;
+        text-align: right;
+        line-height: 1.4;
+    }
+    .doc-title {
+        display: none;
+        font-family: 'Montserrat', sans-serif;
+        color: #001f3b;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    .client-info {
+        display: none;
+        margin-bottom: 1.5rem;
+        padding: 0.75rem 1rem;
+        background: #f5f7fa;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+    .client-info div {
+        margin: 0.2rem 0;
+    }
+    .agency-footer {
+        display: none;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #c3c6cf;
+        font-size: 0.8rem;
+        color: #43474e;
+        text-align: center;
+    }
+    @media print {
+        body { background: white; padding: 0; }
+        .wrap { box-shadow: none; padding: 0; max-width: 100%; }
+        .form-row, .btn-print { display: none; }
+        .agency-header, .doc-title, .client-info, .agency-footer {
+            display: flex !important;
+        }
+        .client-info { display: block !important; }
+        .agency-footer { display: block !important; }
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Liste des documents à fournir</h1>
+
+    <div class="agency-header">
+        <div>
+            <div class="agency-name">Avisofi <span class="agency-city">Troyes</span></div>
+            <div style="font-size:0.8rem; color:#43474e; margin-top:0.2rem;">Courtier en financement</div>
+        </div>
+        <div class="agency-coords">
+            5 avenue Henri Barbusse<br>
+            10410 Saint-Parres-aux-Tertres<br>
+            09 86 66 55 97 — troyes@avisofi.fr
+        </div>
+    </div>
+
+    <div class="form-row">
+        <label for="type">Type de projet</label>
+        <select id="type" onchange="generer()">
+            <option value="immobilier">Crédit immobilier</option>
+            <option value="professionnel">Prêt professionnel</option>
+            <option value="regroupement">Regroupement de crédits</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="client">Nom du client</label>
+        <input type="text" id="client" placeholder="Nom Prénom" oninput="generer()">
+    </div>
+
+    <div class="form-row">
+        <label for="date">Date</label>
+        <input type="date" id="date" oninput="generer()">
+    </div>
+
+    <button class="btn-print" onclick="window.print()">Imprimer / PDF</button>
+
+    <div class="doc-title" id="docTitle"></div>
+
+    <div class="client-info" id="clientInfo"></div>
+
+    <div class="list" id="list"></div>
+
+    <div class="agency-footer">
+        Avisofi Troyes — 5 avenue Henri Barbusse, 10410 Saint-Parres-aux-Tertres — 09 86 66 55 97 — troyes@avisofi.fr
+    </div>
+</div>
+
+<script>
+const documents = {
+    immobilier: {
+        title: "Liste des pièces — Crédit immobilier",
+        sections: [
+            {
+                titre: "Identité",
+                docs: [
+                    "Carte d'identité ou passeport (recto-verso)",
+                    "Justificatif de domicile de moins de 3 mois",
+                    "Livret de famille (si applicable)",
+                    "Contrat de mariage ou PACS (si applicable)"
+                ]
+            },
+            {
+                titre: "Revenus",
+                docs: [
+                    "Trois derniers bulletins de salaire",
+                    "Deux derniers avis d'imposition",
+                    "Contrat de travail",
+                    "Trois derniers relevés de compte",
+                    "Attestation employeur"
+                ]
+            },
+            {
+                titre: "Patrimoine",
+                docs: [
+                    "Tableau d'amortissement des crédits en cours",
+                    "Relevés de livrets et placements",
+                    "Taxe foncière des biens détenus"
+                ]
+            },
+            {
+                titre: "Projet",
+                docs: [
+                    "Compromis de vente ou contrat de réservation",
+                    "Devis des travaux (si envisagés)",
+                    "Estimation du bien par une agence"
+                ]
+            }
+        ]
+    },
+    professionnel: {
+        title: "Liste des pièces — Prêt professionnel",
+        sections: [
+            {
+                titre: "Identité de l'entreprise",
+                docs: [
+                    "Kbis de moins de 3 mois",
+                    "Statuts de l'entreprise",
+                    "Carte d'identité du dirigeant",
+                    "Lisantibilé des dirigeants et associés"
+                ]
+            },
+            {
+                titre: "Comptabilité",
+                docs: [
+                    "Trois derniers bilans et comptes de résultat",
+                    "Liasse fiscale du dernier exercice",
+                    "Situation comptable intermédiaire",
+                    "Détail des comptes courants d'associés"
+                ]
+            },
+            {
+                titre: "Revenus du dirigeant",
+                docs: [
+                    "Trois derniers bulletins de salaire (si rémunération)",
+                    "Deux derniers avis d'imposition",
+                    "Trois derniers relevés de compte personnel"
+                ]
+            },
+            {
+                titre: "Projet de financement",
+                docs: [
+                    "Devis ou facture proforma",
+                    "Plan de financement détaillé",
+                    "Prévisionnel sur 3 ans (si création ou développement)",
+                    "Justificatif de l'affectation des fonds"
+                ]
+            }
+        ]
+    },
+    regroupement: {
+        title: "Liste des pièces — Regroupement de crédits",
+        sections: [
+            {
+                titre: "Identité",
+                docs: [
+                    "Carte d'identité ou passeport",
+                    "Justificatif de domicile de moins de 3 mois",
+                    "Livret de famille (si applicable)"
+                ]
+            },
+            {
+                titre: "Revenus",
+                docs: [
+                    "Trois derniers bulletins de salaire",
+                    "Deux derniers avis d'imposition",
+                    "Trois derniers relevés de compte",
+                    "Contrat de travail ou attestation employeur"
+                ]
+            },
+            {
+                titre: "Crédits à regrouper",
+                docs: [
+                    "Tableaux d'amortissement de tous les crédits en cours",
+                    "Relevés des crédits en cours",
+                    "Coordonnées des organismes prêteurs"
+                ]
+            },
+            {
+                titre: "Patrimoine et charges",
+                docs: [
+                    "Quittances de loyer (si locataire)",
+                    "Taxe foncière (si propriétaire)",
+                    "Relevés de livrets et placements"
+                ]
+            }
+        ]
+    }
+};
+
+function generer() {
+    const type = document.getElementById('type').value;
+    const client = document.getElementById('client').value;
+    const date = document.getElementById('date').value;
+
+    const data = documents[type];
+    document.getElementById('docTitle').textContent = data.title;
+
+    let clientInfo = '';
+    if (client || date) {
+        if (client) clientInfo += `<div><strong>Client :</strong> ${client}</div>`;
+        if (date) {
+            const d = new Date(date);
+            clientInfo += `<div><strong>Date :</strong> ${d.toLocaleDateString('fr-FR')}</div>`;
+        }
+    }
+    document.getElementById('clientInfo').innerHTML = clientInfo;
+
+    let html = '';
+    data.sections.forEach(s => {
+        html += `<div class="list-section"><h3>${s.titre}</h3><ul>`;
+        s.docs.forEach(d => {
+            html += `<li>${d}</li>`;
+        });
+        html += `</ul></div>`;
+    });
+    document.getElementById('list').innerHTML = html;
+}
+
+// Init date today
+document.getElementById('date').value = new Date().toISOString().split('T')[0];
+generer();
+</script>
+</body>
+</html>

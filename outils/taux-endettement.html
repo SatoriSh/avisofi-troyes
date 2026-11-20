@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul taux endettement</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f5f7fa;
+        color: #0b1d2b;
+        padding: 2rem;
+        line-height: 1.5;
+    }
+    .wrap {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    h1 {
+        font-family: 'Montserrat', sans-serif;
+        color: #001f3b;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #ecf4ff;
+    }
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        color: #001f3b;
+        font-size: 1rem;
+        margin: 1.5rem 0 0.75rem;
+    }
+    .row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 0.6rem;
+    }
+    .row label {
+        flex: 1;
+        font-size: 0.9rem;
+        color: #43474e;
+    }
+    .row input {
+        width: 130px;
+        padding: 0.4rem 0.6rem;
+        border: 1px solid #c3c6cf;
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        text-align: right;
+    }
+    .row input:focus {
+        outline: none;
+        border-color: #001f3b;
+    }
+    .btn-add {
+        background: #ecf4ff;
+        color: #001f3b;
+        border: 1px dashed #001f3b;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        font-family: inherit;
+    }
+    .btn-add:hover {
+        background: #d2e4ff;
+    }
+    .btn-remove {
+        background: none;
+        border: none;
+        color: #ba1a1a;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0 0.4rem;
+    }
+    .result {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #f5f7fa;
+        border-radius: 6px;
+        border-left: 4px solid #001f3b;
+    }
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.4rem 0;
+        font-size: 0.95rem;
+    }
+    .result-row.total {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #001f3b;
+        border-top: 1px solid #c3c6cf;
+        margin-top: 0.5rem;
+        padding-top: 0.7rem;
+    }
+    .alert {
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    .alert.ok {
+        background: #e6f4d6;
+        color: #346b00;
+        border-left: 4px solid #346b00;
+    }
+    .alert.ko {
+        background: #ffe1e1;
+        color: #ba1a1a;
+        border-left: 4px solid #ba1a1a;
+    }
+    .alert.warn {
+        background: #fff4d6;
+        color: #8a6300;
+        border-left: 4px solid #f4b61a;
+    }
+    .empty {
+        font-style: italic;
+        color: #43474e;
+        font-size: 0.85rem;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Calcul du taux d'endettement</h1>
+
+    <h2>Revenus mensuels</h2>
+    <div id="revenus"></div>
+    <button class="btn-add" onclick="addRevenu()">+ Ajouter un revenu</button>
+
+    <h2>Crédits en cours</h2>
+    <div id="credits"></div>
+    <button class="btn-add" onclick="addCredit()">+ Ajouter un crédit</button>
+
+    <h2>Pensions versées</h2>
+    <div class="row">
+        <label>Pensions alimentaires versées</label>
+        <input type="number" id="pensions" value="0" oninput="calculer()">
+    </div>
+
+    <div class="result">
+        <div class="result-row">
+            <span>Total revenus</span>
+            <span id="totalRevenus">0 €</span>
+        </div>
+        <div class="result-row">
+            <span>Total charges</span>
+            <span id="totalCharges">0 €</span>
+        </div>
+        <div class="result-row">
+            <span>Reste à vivre</span>
+            <span id="resteVivre">0 €</span>
+        </div>
+        <div class="result-row total">
+            <span>Taux d'endettement</span>
+            <span id="taux">0 %</span>
+        </div>
+        <div id="alertBox"></div>
+    </div>
+</div>
+
+<script>
+let revenuCount = 0;
+let creditCount = 0;
+
+function addRevenu(label = 'Salaire net', value = 0) {
+    revenuCount++;
+    const div = document.createElement('div');
+    div.className = 'row';
+    div.innerHTML = `
+        <input type="text" placeholder="Libellé" value="${label}" style="flex:1; text-align:left; width:auto;">
+        <input type="number" value="${value}" oninput="calculer()" style="width:130px; text-align:right;">
+        <button class="btn-remove" onclick="this.parentNode.remove(); calculer()">×</button>
+    `;
+    document.getElementById('revenus').appendChild(div);
+    calculer();
+}
+
+function addCredit(label = 'Crédit', value = 0) {
+    creditCount++;
+    const div = document.createElement('div');
+    div.className = 'row';
+    div.innerHTML = `
+        <input type="text" placeholder="Libellé" value="${label}" style="flex:1; text-align:left; width:auto;">
+        <input type="number" value="${value}" oninput="calculer()" style="width:130px; text-align:right;">
+        <button class="btn-remove" onclick="this.parentNode.remove(); calculer()">×</button>
+    `;
+    document.getElementById('credits').appendChild(div);
+    calculer();
+}
+
+function calculer() {
+    let totalRevenus = 0;
+    document.querySelectorAll('#revenus .row input[type=number]').forEach(i => {
+        totalRevenus += parseFloat(i.value) || 0;
+    });
+
+    let totalCredits = 0;
+    document.querySelectorAll('#credits .row input[type=number]').forEach(i => {
+        totalCredits += parseFloat(i.value) || 0;
+    });
+
+    const pensions = parseFloat(document.getElementById('pensions').value) || 0;
+    const totalCharges = totalCredits + pensions;
+    const resteVivre = totalRevenus - totalCharges;
+
+    let taux = 0;
+    if (totalRevenus > 0) {
+        taux = (totalCharges / totalRevenus) * 100;
+    }
+
+    document.getElementById('totalRevenus').textContent = totalRevenus.toFixed(0) + ' €';
+    document.getElementById('totalCharges').textContent = totalCharges.toFixed(0) + ' €';
+    document.getElementById('resteVivre').textContent = resteVivre.toFixed(0) + ' €';
+    document.getElementById('taux').textContent = taux.toFixed(1) + ' %';
+
+    const alertBox = document.getElementById('alertBox');
+    let msg = '';
+    let cls = '';
+
+    if (totalRevenus === 0) {
+        msg = 'Saisir les revenus pour lancer le calcul.';
+        cls = 'warn';
+    } else if (taux > 35) {
+        msg = 'Dépassement du seuil HCSF (35 %). Dossier à risque.';
+        cls = 'ko';
+    } else if (taux > 33) {
+        msg = 'Taux proche du seuil HCSF. Vérifier le reste à vivre.';
+        cls = 'warn';
+    } else if (resteVivre < 800 && totalRevenus > 0) {
+        msg = 'Reste à vivre faible (inférieur à 800 €). Dossier à étudier.';
+        cls = 'warn';
+    } else {
+        msg = 'Taux conforme à la norme HCSF.';
+        cls = 'ok';
+    }
+
+    alertBox.className = 'alert ' + cls;
+    alertBox.textContent = msg;
+}
+
+// Init
+addRevenu('Salaire net', 2000);
+addCredit('Crédit auto', 250);
+calculer();
+</script>
+</body>
+</html>
